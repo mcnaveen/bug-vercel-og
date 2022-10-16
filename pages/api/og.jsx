@@ -1,10 +1,22 @@
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
+/* eslint-disable @next/next/no-page-custom-font */
+// /pages/api/og.tsx
 
-export default function Home() {
-  return (
-    <div className={styles.container}>
+import { ImageResponse } from "@vercel/og";
+
+export const config = {
+  runtime: "experimental-edge",
+};
+
+// Make sure the font exists in the specified path:
+const font = fetch(
+  new URL("../../assets/BalooThambi2-Medium.ttf", import.meta.url)
+).then((res) => res.arrayBuffer());
+
+export default async function handler() {
+  const fontData = await font;
+
+  return new ImageResponse(
+    (
       <div
         style={{
           fontSize: 52,
@@ -24,6 +36,17 @@ export default function Home() {
         வைத்திருக்கப்படுதலோ ஆகாது; அடிமை நிலையும் அடிமை வியாபாரமும் அவற்றில்
         எல்லா வகைகளிலும் தடைசெய்யப்படுதல் வேண்டும்.
       </div>
-    </div>
+    ),
+    {
+      width: 1080,
+      height: 1080,
+      fonts: [
+        {
+          name: "Baloo Thambi 2",
+          data: fontData,
+          style: "medium",
+        },
+      ],
+    }
   );
 }
